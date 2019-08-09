@@ -160,7 +160,7 @@ func applicationFromResource(data *schema.ResourceData) *application {
 	}
 	app.Permissions["READ"] = readPerms
 	app.Permissions["WRITE"] = writePerms
-	app.Permissions["EXEC"] = execPerms
+	app.Permissions["EXECUTE"] = execPerms
 
 	return app
 }
@@ -177,7 +177,7 @@ func readApplication(data *schema.ResourceData, application *applicationRead) er
 	for _, team := range application.Attributes.Permissions["READ"] {
 		perms[team] = "read"
 	}
-	for _, team := range application.Attributes.Permissions["EXEC"] {
+	for _, team := range application.Attributes.Permissions["EXECUTE"] {
 		perms[team] = perms[team] + "_exec"
 	}
 	for _, team := range application.Attributes.Permissions["WRITE"] {
