@@ -32,7 +32,7 @@ func resourceApplication() *schema.Resource {
 				Optional: true,
 				Elem: &schema.Schema{
 					Type:         schema.TypeString,
-					ValidateFunc: validation.StringInSlice([]string{"READ", "EXEC", "WRITE"}, false),
+					ValidateFunc: validation.StringInSlice([]string{"read", "read_execute", "read_execute_write"}, false),
 				},
 			},
 		},
@@ -53,7 +53,7 @@ type application struct {
 	Name         string              `json:"name"`
 	Email        string              `json:"email"`
 	InstancePort int                 `json:"instancePort"`
-	Permissions  map[string][]string `json:"permissions"`
+	Permissions  map[string][]string `json:"permissions,omitempty"`
 }
 
 // applicationRead represents the Gate API schema of an application
@@ -139,10 +139,28 @@ func applicationFromResource(data *schema.ResourceData) *application {
 		Permissions:  make(map[string][]string),
 	}
 
+	// convert {"team_name": "read_write"} to {"READ": ["team_name"], "WRITE": ["team_name"]}
+	// for the spinnaker API
+	readPerms := []string{}
+	writePerms := []string{}
+	execPerms := []string{}
+
 	for team, permI := range data.Get("permissions").(map[string]interface{}) {
 		perm := permI.(string)
-		app.Permissions[perm] = append(app.Permissions[perm], team)
+		if strings.HasPrefix(perm, "read") {
+			readPerms = append(readPerms, team)
+		}
+		if strings.Contains(perm, "_exec_") {
+			execPerms = append(execPerms, team)
+		}
+		if strings.HasSuffix(perm, "write") {
+			writePerms = append(writePerms, team)
+		}
+
 	}
+	app.Permissions["READ"] = readPerms
+	app.Permissions["WRITE"] = writePerms
+	app.Permissions["EXEC"] = execPerms
 
 	return app
 }
@@ -153,11 +171,23 @@ func readApplication(data *schema.ResourceData, application *applicationRead) er
 	data.Set("email", application.Attributes.Email)
 	data.Set("instance_port", application.Attributes.InstancePort)
 
-	perms := make(map[string][]string)
-	for perm, teams := range application.Attributes.Permissions {
-		for _, team := range teams {
-			perms[team] = append(perms[team], perm)
+	// convert {"READ": ["team_name"], "WRITE": ["team_name"]} to {"team_name": "read_write"}
+	// for the spinnaker API
+	perms := make(map[string]string)
+	for _, team := range application.Attributes.Permissions["READ"] {
+		perms[team] = "read"
+	}
+	for _, team := range application.Attributes.Permissions["EXEC"] {
+		perms[team] = perms[team] + "_exec"
+	}
+	for _, team := range application.Attributes.Permissions["WRITE"] {
+		perm, ok := perms[team]
+		if ok {
+			// perms contains "read", append undescore to create "read_write"
+			perm += "_"
 		}
+		perm += "write"
+		perms[team] = perm
 	}
 	data.Set("permissions", perms)
 	return nil
