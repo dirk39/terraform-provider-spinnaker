@@ -150,7 +150,7 @@ func applicationFromResource(data *schema.ResourceData) *application {
 		if strings.HasPrefix(perm, "read") {
 			readPerms = append(readPerms, team)
 		}
-		if strings.Contains(perm, "_exec_") {
+		if strings.Contains(perm, "exec") {
 			execPerms = append(execPerms, team)
 		}
 		if strings.HasSuffix(perm, "write") {
