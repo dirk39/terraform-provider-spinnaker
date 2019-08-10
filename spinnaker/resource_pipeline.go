@@ -202,6 +202,12 @@ func editAndEncodePipeline(pipelineMap map[string]interface{}) (encodedPipeline 
 	delete(pipelineMap, "name")
 	delete(pipelineMap, "updateTs")
 
+	if triggers, ok := pipelineMap["triggers"]; ok {
+		for _, trigger := range triggers.([]interface{}) {
+			delete(trigger.(map[string]interface{}), "runAsUser")
+		}
+	}
+
 	// Encode the pipeline into a single string
 	// This will sort all keys, etc.
 	editedPipelineBytes, err := json.Marshal(pipelineMap)
