@@ -76,6 +76,7 @@ func resourceApplicationCreate(data *schema.ResourceData, meta interface{}) erro
 		return err
 	}
 
+	data.SetId(app.Name)
 	return resourceApplicationRead(data, meta)
 }
 
