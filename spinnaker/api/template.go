@@ -18,7 +18,7 @@ func CreatePipelineTemplate(client *gate.GatewayClient, template interface{}) er
 		return err
 	}
 
-	if resp.StatusCode != http.StatusAccepted {
+	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusAccepted {
 		return fmt.Errorf("Encountered an error saving template, status code: %d\n", resp.StatusCode)
 	}
 
@@ -28,7 +28,7 @@ func CreatePipelineTemplate(client *gate.GatewayClient, template interface{}) er
 func GetPipelineTemplate(client *gate.GatewayClient, templateID string, dest interface{}) error {
 	successPayload, resp, err := client.PipelineTemplatesControllerApi.GetUsingGET(client.Context, templateID)
 	if err != nil {
-		if resp.StatusCode == http.StatusNotFound {
+		if resp != nil && resp.StatusCode == http.StatusNotFound {
 			return fmt.Errorf("%s", ErrCodeNoSuchEntityException)
 		}
 		return fmt.Errorf("Encountered an error getting pipeline template %s, %s\n",

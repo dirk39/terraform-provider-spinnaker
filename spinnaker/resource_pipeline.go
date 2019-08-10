@@ -37,6 +37,9 @@ func resourcePipeline() *schema.Resource {
 		Update: resourcePipelineUpdate,
 		Delete: resourcePipelineDelete,
 		Exists: resourcePipelineExists,
+		Importer: &schema.ResourceImporter{
+			State: schema.ImportStatePassthrough,
+		},
 	}
 }
 

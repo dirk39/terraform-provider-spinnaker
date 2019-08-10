@@ -69,6 +69,10 @@ func resourcePipelineTemplateConfig() *schema.Resource {
 		Read:   resourcePipelineTemplateConfigRead,
 		Update: resourcePipelineTemplateConfigUpdate,
 		Delete: resourcePipelineTemplateConfigDelete,
+		Exists: resourcePipelineTemplateConfigExists,
+		Importer: &schema.ResourceImporter{
+			State: schema.ImportStatePassthrough,
+		},
 	}
 }
 

@@ -41,6 +41,9 @@ func resourceApplication() *schema.Resource {
 		Update: resourceApplicationUpdate,
 		Delete: resourceApplicationDelete,
 		Exists: resourceApplicationExists,
+		Importer: &schema.ResourceImporter{
+			State: schema.ImportStatePassthrough,
+		},
 	}
 }
 
@@ -80,7 +83,7 @@ func resourceApplicationRead(data *schema.ResourceData, meta interface{}) error 
 	clientConfig := meta.(gateConfig)
 	client := clientConfig.client
 
-	applicationName := data.Get("application").(string)
+	applicationName := data.Id()
 	app := &applicationRead{}
 	if err := api.GetApplication(client, applicationName, app); err != nil {
 		return err
@@ -105,7 +108,7 @@ func resourceApplicationUpdate(data *schema.ResourceData, meta interface{}) erro
 func resourceApplicationDelete(data *schema.ResourceData, meta interface{}) error {
 	clientConfig := meta.(gateConfig)
 	client := clientConfig.client
-	applicationName := data.Get("application").(string)
+	applicationName := data.Id()
 
 	return api.DeleteAppliation(client, applicationName)
 }
@@ -113,7 +116,7 @@ func resourceApplicationDelete(data *schema.ResourceData, meta interface{}) erro
 func resourceApplicationExists(data *schema.ResourceData, meta interface{}) (bool, error) {
 	clientConfig := meta.(gateConfig)
 	client := clientConfig.client
-	applicationName := data.Get("application").(string)
+	applicationName := data.Id()
 
 	var app applicationRead
 	if err := api.GetApplication(client, applicationName, &app); err != nil {
@@ -167,7 +170,7 @@ func applicationFromResource(data *schema.ResourceData) *application {
 
 func readApplication(data *schema.ResourceData, application *applicationRead) error {
 	data.SetId(application.Name)
-	data.Set("name", application.Name)
+	data.Set("application", application.Name)
 	data.Set("email", application.Attributes.Email)
 	data.Set("instance_port", application.Attributes.InstancePort)
 
@@ -178,7 +181,13 @@ func readApplication(data *schema.ResourceData, application *applicationRead) er
 		perms[team] = "read"
 	}
 	for _, team := range application.Attributes.Permissions["EXECUTE"] {
-		perms[team] = perms[team] + "_exec"
+		perm, ok := perms[team]
+		if ok {
+			// perms contains "read", append undescore to create "read_write"
+			perm += "_"
+		}
+		perm += "exec"
+		perms[team] = perm
 	}
 	for _, team := range application.Attributes.Permissions["WRITE"] {
 		perm, ok := perms[team]
