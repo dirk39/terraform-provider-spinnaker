@@ -179,7 +179,6 @@ func pipelineDiffSuppressFunc(k, old, new string, d *schema.ResourceData) bool {
 }
 
 func decodeEditAndEncodePipeline(pipeline string) (encodedPipeline string, err error) {
-
 	// Decode the pipeline into a map we can edit
 	pipelineBytes := []byte(pipeline)
 	var pipelineMapGeneric interface{}

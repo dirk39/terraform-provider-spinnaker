@@ -332,12 +332,17 @@ github.com/sourcegraph/annotate v0.0.0-20160123013949-f4cad6c6324d/go.mod h1:Udh
 github.com/sourcegraph/syntaxhighlight v0.0.0-20170531221838-bd320f5d308e/go.mod h1:HuIsMU8RRBOtsCgI77wP899iHVBQpCmg4ErYMZB+2IA=
 github.com/spf13/afero v1.2.1 h1:qgMbHoJbPbw579P+1zVY+6n4nIFuIchaIjzZ/I/Yq8M=
 github.com/spf13/afero v1.2.1/go.mod h1:9ZxEEn6pIJ8Rxe320qSDBk6AsU0r9pR7Q4OcevTdifk=
+github.com/spf13/cobra v0.0.3 h1:ZlrZ4XsMRm04Fr5pSFxBgfND2EBVa1nLpiy1stUsX/8=
 github.com/spf13/cobra v0.0.3/go.mod h1:1l0Ry5zgKvJasoi3XT1TypsSe7PqH0Sj9dhYf7v3XqQ=
 github.com/spf13/pflag v1.0.2/go.mod h1:DYY7MBk1bdzusC3SYhjObp+wFpr4gzcvqqNjLnInEg4=
 github.com/spf13/pflag v1.0.3 h1:zPAT6CGy6wXeQ7NtTnaTerfKOsV6V6F8agHXFiazDkg=
 github.com/spf13/pflag v1.0.3/go.mod h1:DYY7MBk1bdzusC3SYhjObp+wFpr4gzcvqqNjLnInEg4=
 github.com/spinnaker/spin v0.0.0-20190530150642-535d2dc1b985 h1:ZOqsrZMPcXxYc7FZk3kq5IGzvlwALNBdj6rHim9lZzg=
 github.com/spinnaker/spin v0.0.0-20190530150642-535d2dc1b985/go.mod h1:IiOAE2W2MLKO+iV7jKPcQSalsw4oaaZT1SLgw5UnauU=
+github.com/spinnaker/spin v0.4.0 h1:Y4cvt0Mnv2jjmMqv0SWKCmcc61WFNgWvRG8cYzRSF/M=
+github.com/spinnaker/spin v0.4.0/go.mod h1:uULAccmm2u+BXa7k2htgjxL0S+yhPRLUZYAnr4TWCYQ=
+github.com/spinnaker/spin v0.4.1-0.20190514235037-ce3904e37aaa h1:x3iJzYlRxEIcS8WyhTUx9N9XWIXi3U98adESdhGAlfQ=
+github.com/spinnaker/spin v0.4.1-0.20190514235037-ce3904e37aaa/go.mod h1:uULAccmm2u+BXa7k2htgjxL0S+yhPRLUZYAnr4TWCYQ=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/objx v0.1.1/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/testify v1.2.2/go.mod h1:a8OnRcib4nhh0OaRAV+Yts87kKdq0PP7pXfy6kDkUVs=
