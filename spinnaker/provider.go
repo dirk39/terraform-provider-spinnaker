@@ -36,6 +36,7 @@ func Provider() *schema.Provider {
 		},
 		ResourcesMap: map[string]*schema.Resource{
 			"spinnaker_application":              resourceApplication(),
+			"spinnaker_project":                  resourceProject(),
 			"spinnaker_pipeline":                 resourcePipeline(),
 			"spinnaker_pipeline_template":        resourcePipelineTemplate(),
 			"spinnaker_pipeline_template_config": resourcePipelineTemplateConfig(),

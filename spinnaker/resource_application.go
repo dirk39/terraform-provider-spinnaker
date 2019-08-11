@@ -11,7 +11,7 @@ import (
 func resourceApplication() *schema.Resource {
 	return &schema.Resource{
 		Schema: map[string]*schema.Schema{
-			"application": {
+			"name": {
 				Type:     schema.TypeString,
 				Required: true,
 				ForceNew: true,
@@ -85,12 +85,12 @@ func resourceApplicationRead(data *schema.ResourceData, meta interface{}) error 
 	client := clientConfig.client
 
 	applicationName := data.Id()
-	app := &applicationRead{}
-	if err := api.GetApplication(client, applicationName, app); err != nil {
+	var app applicationRead
+	if err := api.GetApplication(client, applicationName, &app); err != nil {
 		return err
 	}
 
-	return readApplication(data, app)
+	return readApplication(data, &app)
 }
 
 func resourceApplicationUpdate(data *schema.ResourceData, meta interface{}) error {
@@ -137,7 +137,7 @@ func resourceApplicationExists(data *schema.ResourceData, meta interface{}) (boo
 
 func applicationFromResource(data *schema.ResourceData) *application {
 	app := &application{
-		Name:         data.Get("application").(string),
+		Name:         data.Get("name").(string),
 		Email:        data.Get("email").(string),
 		InstancePort: data.Get("instance_port").(int),
 		Permissions:  make(map[string][]string),
@@ -171,7 +171,7 @@ func applicationFromResource(data *schema.ResourceData) *application {
 
 func readApplication(data *schema.ResourceData, application *applicationRead) error {
 	data.SetId(application.Name)
-	data.Set("application", application.Name)
+	data.Set("name", application.Name)
 	data.Set("email", application.Attributes.Email)
 	data.Set("instance_port", application.Attributes.InstancePort)
 
