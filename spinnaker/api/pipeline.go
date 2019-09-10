@@ -2,6 +2,7 @@ package api
 
 import (
 	"fmt"
+	"io"
 	"net/http"
 
 	"github.com/mitchellh/mapstructure"
@@ -28,7 +29,7 @@ func GetPipeline(client *gate.GatewayClient, applicationName, pipelineName strin
 		pipelineName)
 
 	if err != nil {
-		if resp != nil && resp.StatusCode == http.StatusNotFound {
+		if resp != nil && (resp.StatusCode == http.StatusNotFound || err == io.EOF) {
 			return jsonMap, fmt.Errorf("%s", ErrCodeNoSuchEntityException)
 		}
 		return jsonMap, fmt.Errorf("Encountered an error getting pipeline %s, %s\n",

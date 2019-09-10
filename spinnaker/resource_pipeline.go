@@ -78,6 +78,10 @@ func resourcePipelineRead(data *schema.ResourceData, meta interface{}) error {
 	var p pipelineRead
 	jsonMap, err := api.GetPipeline(client, applicationName, pipelineName, &p)
 	if err != nil {
+		if err.Error() == api.ErrCodeNoSuchEntityException {
+			data.SetId("")
+			return nil
+		}
 		return err
 	}
 
@@ -148,6 +152,9 @@ func resourcePipelineExists(data *schema.ResourceData, meta interface{}) (bool, 
 
 	var p pipelineRead
 	if _, err := api.GetPipeline(client, applicationName, pipelineName, &p); err != nil {
+		if err.Error() == api.ErrCodeNoSuchEntityException {
+			return false, nil
+		}
 		return false, err
 	}
 
