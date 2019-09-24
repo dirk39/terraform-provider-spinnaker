@@ -177,6 +177,7 @@ func resourceProjectExists(data *schema.ResourceData, meta interface{}) (bool, e
 
 func projectFromResource(data *schema.ResourceData) *Project {
 	prj := &Project{
+		ID:    data.Id(),
 		Name:  data.Get("name").(string),
 		Email: data.Get("email").(string),
 		Config: &ProjectConfig{
