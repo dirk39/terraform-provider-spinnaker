@@ -115,6 +115,24 @@ resource "spinnaker_pipeline_template" "terraform_example" {
 
 * `template` - A yaml formated [DCD Spec pipeline template](https://github.com/spinnaker/dcd-spec/blob/master/PIPELINE_TEMPLATES.md#templates) 
 
+### `spinnaker_pipeline_template_v2`
+
+#### Example Usage
+
+```
+data "template_file" "dcd_template" {
+    template = "${file("template.yml")}"
+}
+
+resource "spinnaker_pipeline_template_v2" "terraform_example" {
+    template = "${data.template_file.dcd_template.rendered}"
+}
+```
+
+#### Argument Reference
+
+* `template` - A yaml formated [DCD Spec pipeline template](https://github.com/spinnaker/dcd-spec/blob/master/PIPELINE_TEMPLATES.md#templates) 
+
 ### `spinnaker_pipeline_template_config`
 
 #### Example Usage
