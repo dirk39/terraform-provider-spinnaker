@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/armory-io/terraform-provider-spinnaker/spinnaker/api"
+	"github.com/marcoreni/terraform-provider-spinnaker/spinnaker/api"
 	"github.com/hashicorp/terraform/helper/schema"
 )
 

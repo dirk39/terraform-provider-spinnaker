@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/armory-io/terraform-provider-spinnaker/spinnaker/api"
+	"github.com/marcoreni/terraform-provider-spinnaker/spinnaker/api"
 	"github.com/ghodss/yaml"
 	"github.com/hashicorp/terraform/helper/schema"
 )

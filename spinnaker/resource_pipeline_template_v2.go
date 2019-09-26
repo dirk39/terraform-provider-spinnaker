@@ -18,7 +18,7 @@ func resourcePipelineTemplateV2() *schema.Resource {
 			"template": {
 				Type:             schema.TypeString,
 				Required:         true,
-				DiffSuppressFunc: suppressEquivalentPipelineTemplateDiffs,
+				DiffSuppressFunc: suppressEquivalentPipelineTemplateDiffsv2,
 			},
 			"url": {
 				Type:     schema.TypeString,
@@ -36,7 +36,7 @@ func resourcePipelineTemplateV2() *schema.Resource {
 	}
 }
 
-type templateRead struct {
+type templateReadv2 struct {
 	ID string `json:"id"`
 }
 
@@ -156,7 +156,7 @@ func resourcePipelineTemplateExistsV2(data *schema.ResourceData, meta interface{
 	client := clientConfig.client
 	templateName := data.Id()
 
-	var t templateRead
+	var t templateReadv2
 	if err := api.V2GetPipelineTemplate(client, templateName, &t); err != nil {
 		if err.Error() == api.V2ErrCodeNoSuchEntityException {
 			return false, nil
@@ -171,8 +171,8 @@ func resourcePipelineTemplateExistsV2(data *schema.ResourceData, meta interface{
 	return false, nil
 }
 
-func suppressEquivalentPipelineTemplateDiffs(k, old, new string, d *schema.ResourceData) bool {
-	equivalent, err := areEqualJSON(old, new)
+func suppressEquivalentPipelineTemplateDiffsv2(k, old, new string, d *schema.ResourceData) bool {
+	equivalent, err := areEqualJSONv2(old, new)
 	if err != nil {
 		return false
 	}
@@ -180,7 +180,7 @@ func suppressEquivalentPipelineTemplateDiffs(k, old, new string, d *schema.Resou
 	return equivalent
 }
 
-func areEqualJSON(s1, s2 string) (bool, error) {
+func areEqualJSONv2(s1, s2 string) (bool, error) {
 	var o1 interface{}
 	var o2 interface{}
 
