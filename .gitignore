@@ -6,3 +6,4 @@ terraform-provider-spinnaker
 pipelines
 /vendor
 /dist
+template-sample.yaml
