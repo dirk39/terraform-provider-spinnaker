@@ -12,8 +12,15 @@ const (
 	V2ErrCodeNoSuchEntityException = "NoSuchEntityException"
 )
 
-func V2CreatePipelineTemplate(client *gate.GatewayClient, template interface{}) error {
-	resp, err := client.V2PipelineTemplatesControllerApi.CreateUsingPOST1(client.Context, template, nil)
+type gatewayClient interface {
+	createPipelineTemplateV2(interface{}) (*http.Response, error)
+}
+
+// V2CreatePipelineTemplate create a pipeline template
+func V2CreatePipelineTemplate(client gatewayClient, template interface{}) error {
+	//func V2CreatePipelineTemplate(client *gate.GatewayClient, template interface{}) error {
+	//resp, err := client.V2PipelineTemplatesControllerApi.CreateUsingPOST1(client.Context, template, nil)
+	resp, err := client.createPipelineTemplateV2(template)
 	if err != nil {
 		return err
 	}
