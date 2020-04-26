@@ -11,8 +11,8 @@ var createPipelineTemplateV2Mock func(interface{}) (*http.Response, error)
 type mockedAPIClient struct {
 }
 
-func (client mockedAPIClient) createPipelineTemplateV2(values interface{}) (*http.Response, error) {
-	return createPipelineTemplateV2Mock(values)
+func (client mockedAPIClient) createPipelineTemplateV2(template interface{}) (*http.Response, error) {
+	return createPipelineTemplateV2Mock(template)
 }
 
 // TestV2CreatePipelineTemplateReturnErrorFromApi test that

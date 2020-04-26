@@ -41,37 +41,36 @@ type templateReadv2 struct {
 }
 
 func resourcePipelineTemplateCreateV2(data *schema.ResourceData, meta interface{}) error {
-	return nil
-	// clientConfig := meta.(gateConfig)
-	// client := clientConfig.client
-	// var templateName string
-	// template := data.Get("template").(string)
+	clientConfig := meta.(gateConfig)
+	client := api.InitAPIClient(clientConfig.client)
 
-	// d, err := yaml.YAMLToJSON([]byte(template))
-	// if err != nil {
-	// 	return err
-	// }
+	template := data.Get("template").(string)
 
-	// var jsonContent map[string]interface{}
-	// if err = json.NewDecoder(bytes.NewReader(d)).Decode(&jsonContent); err != nil {
-	// 	return fmt.Errorf("Error decoding json: %s", err.Error())
-	// }
+	d, err := yaml.YAMLToJSON([]byte(template))
+	if err != nil {
+		return err
+	}
 
-	// if _, ok := jsonContent["schema"]; !ok {
-	// 	return fmt.Errorf("Pipeline save command currently only supports pipeline template configurations")
-	// }
+	var jsonContent map[string]interface{}
+	if err = json.NewDecoder(bytes.NewReader(d)).Decode(&jsonContent); err != nil {
+		return fmt.Errorf("Error decoding json: %s", err.Error())
+	}
 
-	// templateName = jsonContent["id"].(string)
+	if _, ok := jsonContent["schema"]; !ok {
+		return fmt.Errorf("Pipeline save command currently only supports pipeline template configurations")
+	}
 
-	// log.Println("[DEBUG] Making request to spinnaker")
-	// if err := api.V2CreatePipelineTemplate(client, jsonContent); err != nil {
-	// 	log.Printf("[DEBUG] Error response from spinnaker: %s", err.Error())
-	// 	return err
-	// }
+	templateName := jsonContent["id"].(string)
 
-	// log.Printf("[DEBUG] Created template successfully")
-	// data.SetId(templateName)
-	// return resourcePipelineTemplateReadV2(data, meta)
+	log.Println("[DEBUG] Making request to spinnaker")
+	if err := api.V2CreatePipelineTemplate(client, jsonContent); err != nil {
+		log.Printf("[DEBUG] Error response from spinnaker: %s", err.Error())
+		return err
+	}
+
+	log.Printf("[DEBUG] Created template successfully")
+	data.SetId(templateName)
+	return resourcePipelineTemplateReadV2(data, meta)
 }
 
 func resourcePipelineTemplateReadV2(data *schema.ResourceData, meta interface{}) error {
