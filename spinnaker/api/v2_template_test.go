@@ -7,12 +7,17 @@ import (
 )
 
 var createPipelineTemplateV2Mock func(interface{}) (*http.Response, error)
+var getPipelineTemplateV2Mock func(string) (map[string]interface{}, *http.Response, error)
 
 type mockedAPIClient struct {
 }
 
 func (client mockedAPIClient) createPipelineTemplateV2(template interface{}) (*http.Response, error) {
 	return createPipelineTemplateV2Mock(template)
+}
+
+func (client mockedAPIClient) getPipelineTemplateV2(templateID string) (map[string]interface{}, *http.Response, error) {
+	return getPipelineTemplateV2Mock(templateID)
 }
 
 // TestV2CreatePipelineTemplateReturnErrorFromApi test that
@@ -56,4 +61,15 @@ func TestV2CreatePipelineTemplateReturnErrorByStatusCode(t *testing.T) {
 	}
 
 	t.Log("TestV2CreatePipelineTemplateReturnErrorByStatusCode PASS")
+}
+
+func TestV2GetPipelineTemplateReturnNoSuchEntityError(t *testing.T) {
+	getPipelineTemplateV2Mock = func(string) (map[string]interface{}, *http.Response, error) {
+		return nil, nil, errors.New("Undefined error")
+	}
+
+	var mock mockedAPIClient
+
+	err := V2GetPipelineTemplate(mock, "john-doe", nil)
+
 }

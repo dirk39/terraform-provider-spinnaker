@@ -9,6 +9,7 @@ import (
 )
 
 const (
+	//V2ErrCodeNoSuchEntityException error code for v2 templates
 	V2ErrCodeNoSuchEntityException = "NoSuchEntityException"
 )
 
@@ -18,8 +19,6 @@ type gatewayClient interface {
 
 // V2CreatePipelineTemplate create a pipeline template
 func V2CreatePipelineTemplate(client gatewayClient, template interface{}) error {
-	//func V2CreatePipelineTemplate(client *gate.GatewayClient, template interface{}) error {
-	//resp, err := client.V2PipelineTemplatesControllerApi.CreateUsingPOST1(client.Context, template, nil)
 	resp, err := client.createPipelineTemplateV2(template)
 	if err != nil {
 		return err
